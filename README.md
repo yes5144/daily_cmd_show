@@ -1,2 +1,3 @@
 # daily_cmd_show
-Record the daily commonds
+
+Record the daily commands
