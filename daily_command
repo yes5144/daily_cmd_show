@@ -1,4 +1,27 @@
 # 1, about vim 
 :45,58s/^/#/g   # 45-58行 添加注释
 
-# 2, 
+# 2, mysql
+> create database jumpserver default charset 'utf8';
+> grant all on jumpserver.* to 'jumpserver'@'127.0.0.1' identified by 'somepassword';
+> flush privileges;
+> show grant for jumpserver@'127.0.0.1';
+
+
+# 3, config aliyun Pypi
+[ ! -d ~/.pip/ ] && mkdir ~/.pip/
+
+cat >~/.pip/pip.conf <<EOF
+[global]
+index-url = http://mirrors.aliyun.com/pypi/simple/
+
+[install]
+trusted-host=mirrors.aliyun.com
+
+EOF
+
+# 4, 
+
+
+
+
