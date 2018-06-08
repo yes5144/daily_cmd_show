@@ -35,5 +35,14 @@ ps -ef |grep mysql
 lsof -i :3306
 ls -l /proc/PID号
 
+# 6，mysql添加字段，修改字段，添加索引
+#
+USE airflow_18_221;
+SHOW COLUMNS FROM `task_instance`;
+ALTER TABLE `task_instance` ADD COLUMN `max_tries` int(11) DEFAULT '-1';
+ALTER TABLE `task_instance` ADD INDEX `ti_job_id` (`job_id`);
+
+ALTER TABLE `variable` MODIFY `val` mediumtext;
+
 
 
