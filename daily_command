@@ -44,5 +44,42 @@ ALTER TABLE `task_instance` ADD INDEX `ti_job_id` (`job_id`);
 
 ALTER TABLE `variable` MODIFY `val` mediumtext;
 
+# 7, redis报错
+redis-cli
+6379 > config set stop-writes-on-bgsave-error no
+
+# 8, 执行了一个alter DDL ,报等待
+#
+> SHOW PROCESSLIST;
+# 
+> select trx_state, trx_started, trx_mysql_thread_id, trx_query from information_schema.innodb_trx \G;
+# 默认锁一年
+> set session lock_wait_timeout = 1800;
+> set global lock_wait_timeout = 1800;
+
+# 9, (1205, 'Lock wait timeout exceeded; try restarting transaction')
+#
+> show processlist;
+> kill trx_mysql_thread_id; #( ID )
+
+# 增加锁等待时间，即增大下面配置项参数值，单位为秒（s）
+# innodb_lock_wait_timeout=500
+
+# 10, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
