@@ -66,8 +66,15 @@ redis-cli
 # innodb_lock_wait_timeout=500
 
 # 10, 
+# 查找目录下的所有文件中是否含有某个字符串 
+find .|xargs grep -ri "IBM" 
+# 查找目录下的所有文件中是否含有某个字符串,并且只打印出文件名 
+find .|xargs grep -ri "IBM" -l
 
-
+find airflow |xargs grep -ri 'datetime\.now' --color=auto 
+find airflow -type f -print0 | xargs -0 sed -i 's/datetime.utcnow()/datetime.now(tz=None)/g'
+find airflow |xargs grep -ri 'datetime\.utcnow' --color=auto
+find airflow |xargs grep -ri 'datetime\.now' --color=auto
 
 
 
