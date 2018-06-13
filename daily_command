@@ -1,4 +1,4 @@
-# 1, about vim 多行添加注释
+# 1, vim 多行添加注释
 #
 :45,58s/^/#/g   # 45-58行 添加注释
 
@@ -45,6 +45,7 @@ ALTER TABLE `task_instance` ADD INDEX `ti_job_id` (`job_id`);
 ALTER TABLE `variable` MODIFY `val` mediumtext;
 
 # 7, redis报错
+#
 redis-cli
 6379 > config set stop-writes-on-bgsave-error no
 
@@ -65,7 +66,7 @@ redis-cli
 # 增加锁等待时间，即增大下面配置项参数值，单位为秒（s）
 # innodb_lock_wait_timeout=500
 
-# 10, 
+# 10, 命令组合之 find
 # 查找目录下的所有文件中是否含有某个字符串 
 find .|xargs grep -ri "IBM" 
 # 查找目录下的所有文件中是否含有某个字符串,并且只打印出文件名 
@@ -76,7 +77,30 @@ find airflow -type f -print0 | xargs -0 sed -i 's/datetime.utcnow()/datetime.now
 find airflow |xargs grep -ri 'datetime\.utcnow' --color=auto
 find airflow |xargs grep -ri 'datetime\.now' --color=auto
 
+# 11， mysql权限详细
+#
+mysql> REVOKE INSERT ON *.* FROM 'jeffrey'@'localhost';
+mysql> show grants for airflow@localhost;
++----------------------------------------------------------------------------------------------------------------+
+| Grants for airflow@localhost                                                                                   |
++----------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'airflow'@'localhost' IDENTIFIED BY PASSWORD '*6D9712F10090993204A9871BD8200AAB8E8CA14E' |
+| GRANT ALL PRIVILEGES ON `airflowdb`.* TO 'airflow'@'localhost'                                                 |
+| GRANT ALL PRIVILEGES ON `airflow`.* TO 'airflow'@'localhost'                                                   |
++----------------------------------------------------------------------------------------------------------------+
 
+mysql> revoke delete on airflow.* from airflow@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show grants for airflow@localhost;
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for airflow@localhost                                                                                                                                                                                                       |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'airflow'@'localhost' IDENTIFIED BY PASSWORD '*6D9712F10090993204A9871BD8200AAB8E8CA14E'                                                                                                                     |
+| GRANT ALL PRIVILEGES ON `airflowdb`.* TO 'airflow'@'localhost'                                                                                                                                                                     |
+| GRANT SELECT, INSERT, UPDATE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `airflow`.* TO 'airflow'@'localhost' |
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
 
 
 
