@@ -114,8 +114,19 @@ mysqldump -uroot -p123456 -t --ignore-table=database.table1 --ignore-table=datab
 # //dump指定表中的数据
 mysqldump -uroot -p123456 -t database table1 table2 > database.sql
 
+# 13, mysql 查询某些表的 大小
+#
+# 首先打开指定的数据库：
+use information_schema;
+
+# 如果想看指定数据库中的数据表，可以用如下语句：
+select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES where table_schema='DB_NAME' and table_name='TABLE_NAME';
+
+# 如果想看数据库中每个数据表的，可以用如下语句：
+SELECT TABLE_NAME,DATA_LENGTH+INDEX_LENGTH,TABLE_ROWS,concat(round((DATA_LENGTH+INDEX_LENGTH)/1024/1024,2), 'MB') as data FROM TABLES WHERE TABLE_SCHEMA='DB_NAME';
 
 
+# 14, 
 
 
 
