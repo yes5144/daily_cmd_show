@@ -103,7 +103,16 @@ mysql> show grants for airflow@localhost;
 3 rows in set (0.00 sec)
 
 
+# 12, mysql 排除某个表 备份
+#
+# //dump数据库database中所有表的结构到database.sql文件中
+mysqldump -uroot -p123456 -d database > database.sql
 
+# //dump除过table1和table2其余所有表中的数据追加到database.sql文件中
+mysqldump -uroot -p123456 -t --ignore-table=database.table1 --ignore-table=database.table2 >> database.sql
+
+# //dump指定表中的数据
+mysqldump -uroot -p123456 -t database table1 table2 > database.sql
 
 
 
