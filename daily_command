@@ -125,12 +125,29 @@ select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES wher
 # 如果想看数据库中每个数据表的，可以用如下语句：
 SELECT TABLE_NAME,DATA_LENGTH+INDEX_LENGTH,TABLE_ROWS,concat(round((DATA_LENGTH+INDEX_LENGTH)/1024/1024,2), 'MB') as data FROM TABLES WHERE TABLE_SCHEMA='DB_NAME';
 
+# 14, Python2.7 Python2.7 Python2.7
 
-# 14, 
+import sys
+import os
+
+print '\033[31m************** before ***************\033[0m'
+print sys.path
+
+sys.path.append(os.path.join(sys.path[0], ".."))
+
+print '\033[32m************** after ****************\033[0m'
+print sys.path
+
+# 15, TiDB 暂不支持 alter ... modify  2018-06-15
+#
+ALTER TABLE task_instance MODIFY duration FLOAT NULL
+参考：https://github.com/pingcap/docs/blob/master/sql/mysql-compatibility.md
+
+更多：https://www.pingcap.com/docs-cn/
 
 
-
-
-
+# 16, Django Python
+#
+https://my.oschina.net/jhao104/blog/827344
 
 
