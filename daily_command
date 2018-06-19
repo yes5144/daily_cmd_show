@@ -150,4 +150,14 @@ ALTER TABLE task_instance MODIFY duration FLOAT NULL
 #
 https://my.oschina.net/jhao104/blog/827344
 
+# 17, python 判断数据类型 list, tuple, dict
+#
+>>> a = {1:0, 2:1, 3:2}
+>>> a 
+>>> type(a).__name__ == 'dict'
+
+>>> type(a).__name__ == 'list'
+
+
+
 
