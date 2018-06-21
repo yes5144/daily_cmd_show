@@ -161,3 +161,155 @@ https://my.oschina.net/jhao104/blog/827344
 
 
 
+
+
+
+
+###################
+# 18, TiDB单机安装
+# https://wenku.baidu.com/view/90f4e2567dd184254b35eefdc8d376eeafaa176d.html?qq-pf-to=pcqq.group
+
+# centos7 环境
+yum install ansible -y
+yum install git -y
+
+git clone http://github.com/pingcap/tidb-ansible.git
+
+# 修改inventor 文件
+cat tidb-ansible/inventory.ini
+
+tidb ansible_host=127.0.0.1 deploy_dir=/opt/tidb-cluster/tidb
+tikv ansible_host=127.0.0.1 deploy_dir=/opt/tidb-cluster/tikv
+pd ansible_host=127.0.0.1 deploy_dir=/opt/tidb-cluster/pd
+
+
+monitor ansible_host=127.0.0.1 deploy_dir=/opt/tidb-cluster/monitor
+grafana ansible_host=127.0.0.1 deploy_dir=/opt/tidb-cluster/grafana
+
+[monitored_servers:children]
+tidb_servers
+tikv_servers
+pd_servers
+
+## Binlog Part
+[pump_servers:children]
+tidb_servers
+
+## .....
+
+## Connection
+# ssh via root
+ansible_user = root
+ansible_become = true
+ansible_become_user = tidb
+ansible_ssh_pass = 123456
+
+# ssh via normal user
+# ansible_user = tidb
+
+cluster_name = MyTiDB
+
+tidb_version = latest
+
+# deployment methods, [binary, docker]
+deployment_method = binary
+
+# process supervision, [systemd, supervise]
+process_supervision = systemd
+
+# timezone of deployment region
+timezone = Asia/Shanghai
+set_timezone = True
+
+# misc
+enable_elk = False
+enable_firewalld = False
+
+# check NTP service
+enable_ntpd = False
+machine_benchmark = True
+set_hostname = False
+
+# binlog trigger
+enable_binlog = False
+
+# zookeeper address of kafka cluster, example
+# zookeeper_addr = ""
+zookeeper_addr = ""
+# store slow query log into seperate file
+enable_slow_query_log = False
+
+# KV mode
+deploy_without_tidb = False
+
+############################
+# 接下来就可以进入到tidb-ansible目录安装了
+# 执行如下： 下载二进制文件 和设置系统环境：
+ansible-playbook local_prepare.yml
+ansible-playbook bootstrap.yml
+
+# 安装，不开监控，需要conf里面的。。。
+ansible-playbook deploy.yml
+
+# 启动 -l 指定启动服务
+ansible-playbook start.yml -l tikv,tidb,pd
+
+# 安装mysql客户端
+rpm -ivh https://repo.mysql.com//mysql57-community-release-el7-11.noarch.rpm
+yum install mysql-community-client
+
+# 登录 tidb
+mysql -uroot -h127.0.0.1 -P4000
+
+
+### tispark
+cd /opt/tidb-cluster/tidb/spark/bin/
+./spark-shell --conf spark.tispark.pd.address=127.0.0.1:2379
+
+
+#################################3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
