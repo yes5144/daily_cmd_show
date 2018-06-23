@@ -270,12 +270,25 @@ cd /opt/tidb-cluster/tidb/spark/bin/
 #################################3
 
 
+# 19, mysql 函数3个
 
+-- left(FROM_UNIXTIME(时间戳),10)
+-- UNIX_TIMESTAMP('2018-06-06 00:00:00')
+-- FROM_UNIXTIME('时间戳')
 
-
-
-
-
+SELECT
+	left(FROM_UNIXTIME(createRoleTime),10) as '创建角色日期',
+  left(FROM_UNIXTIME(dtEventTime),10) as '战斗日期',
+  COUNT(DISTINCT lRoleId) AS '战斗人数',
+  COUNT(*) AS '战斗次数'
+FROM
+	`tbllog_battle_end`
+WHERE
+	createRoleTime > UNIX_TIMESTAMP('2018-06-05 00:00:00')
+  AND createRoleTime < UNIX_TIMESTAMP('2018-06-06 00:00:00')
+  AND dtEventTime > UNIX_TIMESTAMP('2018-06-05 00:00:00')
+  AND dtEventTime < UNIX_TIMESTAMP('2018-06-11 00:00:00')
+GROUP BY left(FROM_UNIXTIME(dtEventTime),10) ;
 
 
 
