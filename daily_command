@@ -1,7 +1,9 @@
+####################################
 # 1, vim 多行添加注释
 #
 :45,58s/^/#/g   # 45-58行 添加注释
 
+####################################
 # 2, mysql数据库授权
 #
 > create database jumpserver default charset 'utf8';
@@ -9,6 +11,7 @@
 > flush privileges;
 > show grant for jumpserver@'127.0.0.1';
 
+####################################
 # 3, config aliyun Pypi，配置 aliyun-Pypi仓库
 #
 [ ! -d ~/.pip/ ] && mkdir ~/.pip/
@@ -22,12 +25,14 @@ trusted-host=mirrors.aliyun.com
 
 EOF
 
+####################################
 # 4, centos7设置字符集，中文支持
 #
 localedef -c -f UTF-8 -i zh_CN zh_CN.UTF-8
 export LC_ALL=zh_CN.UTF-8
 echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf
 
+####################################
 # 5, 查询服务是否在线
 #
 netstat -ntlp |grep mysql
@@ -35,6 +40,7 @@ ps -ef |grep mysql
 lsof -i :3306
 ls -l /proc/PID号
 
+####################################
 # 6，mysql添加字段，修改字段，添加索引
 #
 USE airflow_18_221;
@@ -44,11 +50,13 @@ ALTER TABLE `task_instance` ADD INDEX `ti_job_id` (`job_id`);
 
 ALTER TABLE `variable` MODIFY `val` mediumtext;
 
+####################################
 # 7, redis报错
 #
 redis-cli
 6379 > config set stop-writes-on-bgsave-error no
 
+####################################
 # 8, 执行了一个alter DDL ,报等待
 #
 > SHOW PROCESSLIST;
@@ -58,6 +66,7 @@ redis-cli
 > set session lock_wait_timeout = 1800;
 > set global lock_wait_timeout = 1800;
 
+####################################
 # 9, (1205, 'Lock wait timeout exceeded; try restarting transaction')
 #
 > show processlist;
@@ -66,6 +75,7 @@ redis-cli
 # 增加锁等待时间，即增大下面配置项参数值，单位为秒（s）
 # innodb_lock_wait_timeout=500
 
+####################################
 # 10, 命令组合之 find
 # 查找目录下的所有文件中是否含有某个字符串 
 find .|xargs grep -ri "IBM" 
@@ -77,6 +87,7 @@ find airflow -type f -print0 | xargs -0 sed -i 's/datetime.utcnow()/datetime.now
 find airflow |xargs grep -ri 'datetime\.utcnow' --color=auto
 find airflow |xargs grep -ri 'datetime\.now' --color=auto
 
+####################################
 # 11， mysql权限详细
 #
 mysql> REVOKE INSERT ON *.* FROM 'jeffrey'@'localhost';
@@ -102,7 +113,10 @@ mysql> show grants for airflow@localhost;
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 3 rows in set (0.00 sec)
 
+# 设置列级别的权限
+mysql> GRANT SELECT (col1), INSERT (col1, col2) ON mydb.mytbl TO 'someuser'@'somehost';
 
+####################################
 # 12, mysql 排除某个表 备份
 #
 # //dump数据库database中所有表的结构到database.sql文件中
@@ -125,6 +139,7 @@ select concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') as data from TABLES wher
 # 如果想看数据库中每个数据表的，可以用如下语句：
 SELECT TABLE_NAME,DATA_LENGTH+INDEX_LENGTH,TABLE_ROWS,concat(round((DATA_LENGTH+INDEX_LENGTH)/1024/1024,2), 'MB') as data FROM TABLES WHERE TABLE_SCHEMA='DB_NAME';
 
+####################################
 # 14, Python2.7 Python2.7 Python2.7
 
 import sys
@@ -138,6 +153,7 @@ sys.path.append(os.path.join(sys.path[0], ".."))
 print '\033[32m************** after ****************\033[0m'
 print sys.path
 
+####################################
 # 15, TiDB 暂不支持 alter ... modify  2018-06-15
 #
 ALTER TABLE task_instance MODIFY duration FLOAT NULL
@@ -145,7 +161,7 @@ ALTER TABLE task_instance MODIFY duration FLOAT NULL
 
 更多：https://www.pingcap.com/docs-cn/
 
-
+####################################
 # 16, Django Python
 #
 https://my.oschina.net/jhao104/blog/827344
@@ -159,13 +175,7 @@ https://my.oschina.net/jhao104/blog/827344
 >>> type(a).__name__ == 'list'
 
 
-
-
-
-
-
-
-###################
+####################################
 # 18, TiDB单机安装
 # https://wenku.baidu.com/view/90f4e2567dd184254b35eefdc8d376eeafaa176d.html?qq-pf-to=pcqq.group
 
@@ -242,7 +252,7 @@ enable_slow_query_log = False
 # KV mode
 deploy_without_tidb = False
 
-############################
+####################################
 # 接下来就可以进入到tidb-ansible目录安装了
 # 执行如下： 下载二进制文件 和设置系统环境：
 ansible-playbook local_prepare.yml
@@ -266,10 +276,7 @@ mysql -uroot -h127.0.0.1 -P4000
 cd /opt/tidb-cluster/tidb/spark/bin/
 ./spark-shell --conf spark.tispark.pd.address=127.0.0.1:2379
 
-
-#################################3
-
-
+####################################
 # 19, mysql 函数3个
 
 -- left(FROM_UNIXTIME(时间戳),10)
@@ -290,13 +297,41 @@ WHERE
   AND dtEventTime < UNIX_TIMESTAMP('2018-06-11 00:00:00')
 GROUP BY left(FROM_UNIXTIME(dtEventTime),10) ;
 
+####################################
+# 20, docker 常用的命令
+
+# 最好是centos7系统，docker需要内核3.0
+yum -y install docker
+yum -y install docker-compose
+
+# 参考TiDB的部署：https://pingcap.com/docs-cn/op-guide/docker-compose/
+
+# 首先写好自己的 compose.yml文件
+docker-compose pull
+
+	#1.停止所有的container，这样才能够删除其中的images：
+
+docker stop $(docker ps -a -q)
+
+	#如果想要删除所有container的话再加一个指令：
+
+docker rm $(docker ps -a -q)
+
+	#2.查看当前有些什么images
+
+docker images
+
+	#3.删除images，通过image的id来指定删除谁
+
+docker rmi <image id>
+
+####################################
+# 21，
 
 
 
 
-
-
-
+####################################
 
 
 
