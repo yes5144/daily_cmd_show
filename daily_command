@@ -326,10 +326,16 @@ docker images
 docker rmi <image id>
 
 ####################################
-# 21，
-
-
-
+# 21，crontab 常用操作
+# 
+# 30 23 * * * /usr/local/etc/rc.d/lighttpd restart
+crontab -l  # 查看
+crontab -e  # 默认在/var/spool/cron/root
+crontab -r  # 删除目前的日程
+# 
+vim /etc/crontab
+# 
+/etc/init.d/crod relod
 
 ####################################
 
