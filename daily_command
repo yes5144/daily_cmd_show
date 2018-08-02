@@ -359,9 +359,29 @@ grep -v "^\["  airflow.cfg
 grep "^\[" airflow.cfg --color=auto
 
 ####################################
+# 2018-07-31
+# Linux 15分钟负载多少算是正常呢？
+#
+# 有人说：如果这个数值 "除以" 逻辑CPU的数量，不大于5就OK！
+#
+# 仅供参考
+
+
+####################################
+# 2018-08-02
 # 
+sudo du -s * | sort -nr | head   显示前10个占用空间最大的文件或目录
 
+sudo du --max-depth=1         linux查找占空间最大的文件与目录  
 
+sudo find / -size +204800        这样可以查找出大于100M的文件,按需求删除就可
 
+sudo find ./ -size +2048c             查找大于2K的文件，+ 表示大于
+
+sudo find ./ -size -2048c -type f     查找小于2K的文件，- 表示小于
+
+du -sh ./* sort 
+
+find // -xdev -type f -size +10000000c -exec ls -lad {} \;  
 
 
