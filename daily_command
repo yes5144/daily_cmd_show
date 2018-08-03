@@ -369,6 +369,7 @@ grep "^\[" airflow.cfg --color=auto
 
 ####################################
 # 2018-08-02
+# 查找最大文件
 # 
 sudo du -s * | sort -nr | head   显示前10个占用空间最大的文件或目录
 
@@ -385,3 +386,32 @@ du -sh ./* sort
 find // -xdev -type f -size +10000000c -exec ls -lad {} \;  
 
 
+####################################
+# 2018-08-03
+# 删除 airflow 执行失败dag的记录
+#
+# 在 airflow 所在的MySQL数据库执行如下命令：
+
+delete from dag_run where dag_id='your_dag_id' and state="failed";
+
+DELETE FROM `dag_stats` where dag_id='your_dag_id' and state='failed';
+
+
+####################################
+# 2018-08-03
+# mysql 性能监控 qps, tps, iops
+# 
+QPS (Query per second) （每秒查询量）
+TPS(Transaction per second) （每秒事务量，如果是InnoDB会显示，没有InnoDB就不会显示）
+
+计算方法
+___________________________________________________________
+QPS
+Questions = SHOW GLOBAL STATUS LIKE 'Questions';
+Uptime = SHOW GLOBAL STATUS LIKE 'Uptime';
+QPS=Questions/Uptime
+TPS
+Com_commit = SHOW GLOBAL STATUS LIKE 'Com_commit';
+Com_rollback = SHOW GLOBAL STATUS LIKE 'Com_rollback';
+Uptime = SHOW GLOBAL STATUS LIKE 'Uptime';
+TPS=(Com_commit + Com_rollback)/Uptime
