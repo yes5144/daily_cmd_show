@@ -415,3 +415,19 @@ Com_commit = SHOW GLOBAL STATUS LIKE 'Com_commit';
 Com_rollback = SHOW GLOBAL STATUS LIKE 'Com_rollback';
 Uptime = SHOW GLOBAL STATUS LIKE 'Uptime';
 TPS=(Com_commit + Com_rollback)/Uptime
+
+####################################
+# 2018-09-30
+import time,datetime
+
+today = datetime.date.today()
+yestoday = today - datetime.timedelta(days=1)
+
+print yestoday
+
+i = 4
+while i > 0:
+    day2 = today - datetime.timedelta(days=i)
+    day1 = today - datetime.timedelta(days=(i - 1))
+    print day2, '  ', day1
+    i = i - 1
